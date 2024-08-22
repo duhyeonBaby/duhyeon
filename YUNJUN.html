@@ -7,70 +7,163 @@
     <style>
         body {
             display: flex;
-            flex-direction: column; /* Stack children vertically */
+            flex-direction: column;
             height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #b2d8b2; /* Pastel green background */
-            overflow: hidden; /* Prevent scrollbars */
+            background-color: #b2d8b2;
+            overflow: hidden;
         }
         .nav-bar {
             position: fixed;
-            top: 0; /* Fixed at the top of the page */
+            top: 0;
             width: 100%;
-            background-color: black; /* Black background for the nav bar */
-            text-align: center; /* Center-align the navigation items */
-            padding: 20px 0; /* Increased padding for a thicker nav bar */
-            z-index: 3; /* Ensure nav bar is above other elements */
+            background-color: black;
+            text-align: center;
+            padding: 20px 0;
+            z-index: 3;
         }
         .nav-bar a {
             text-decoration: none;
-            color: darkgreen; /* Dark green text color */
-            background-color: white; /* White background for the buttons */
-            padding: 12px 24px; /* Padding for larger buttons */
+            color: darkgreen;
+            background-color: white;
+            padding: 12px 24px;
             margin: 0 10px;
             border-radius: 5px;
-            border: 2px solid green; /* Green border */
+            border: 2px solid green;
             font-weight: bold;
             font-size: 1.2em;
             transition: background-color 0.3s, color 0.3s;
         }
         .nav-bar a.active {
-            background-color: darkgreen; /* Dark green background for the active button */
-            color: white; /* White text color for the active button */
+            background-color: darkgreen;
+            color: white;
         }
         .nav-bar a:hover {
-            background-color: lightgray; /* Light gray on hover */
-            color: darkgreen; /* Dark green text color on hover */
+            background-color: lightgray;
+            color: darkgreen;
         }
         .content {
-            flex: 1; /* Allows the content to take up available space */
+            flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding-top: 80px; /* Space for fixed navbar */
+            padding-top: 80px;
             width: 100%;
-            box-sizing: border-box; /* Includes padding in width calculation */
+            box-sizing: border-box;
         }
         .message {
             font-size: 2em;
             font-weight: bold;
-            background-color: black; /* Black background for the message container */
-            color: white; /* White text color */
+            background-color: black;
+            color: white;
             padding: 20px;
             border-radius: 10px;
             text-align: center;
         }
-        footer {
-            background-color: black; /* Black background for the footer */
-            color: white; /* White text color */
-            text-align: center; /* Center-align the text */
-            padding: 10px 0; /* Padding around the text */
+        .todo-container {
+            margin-top: 30px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        .todo-container h2 {
+            margin: 0;
+            text-align: center;
+            color: darkgreen;
+        }
+        .todo-input {
+            width: calc(100% - 26px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid green;
+            border-radius: 5px;
+        }
+        .todo-button {
+            width: 100%;
+            padding: 10px;
+            background-color: darkgreen;
+            color: white;
+            border: none;
+            border-radius: 5px;
             font-size: 1em;
-            width: 100%; /* Full width of the viewport */
+            cursor: pointer;
+        }
+        .todo-button:hover {
+            background-color: green;
+        }
+        .todo-list {
+            list-style: none;
+            padding: 0;
+        }
+        .todo-item {
+            padding: 10px;
+            background-color: lightgray;
+            border-radius: 5px;
+            margin: 5px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .todo-item button {
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            padding: 5px 10px;
+        }
+
+
+	/* Whack-a-Mole game styles */
+        .whack-a-mole-container {
+	    justify-content: center;
+            margin-top: 30px;
+	    margin-bottom: 40px;
+            background-color: white;
+            padding: 20px;
+	    padding-left: 805px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        .mole-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 10px;
+	    justify-content: center;
+        }
+        .mole {
+            width: 80px;
+            height: 80px;
+            background-color: gray;
+            border-radius: 50%;
+            position: relative;
+            cursor: pointer;
+        }
+        .mole.active {
+            background-color: brown;
+        }
+        #score {
+            font-size: 1.5em;
+            color: darkgreen;
+            margin-bottom: 10px;
+        }
+
+
+        footer {
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 1em;
+            width: 100%;
             position: absolute;
-            bottom: 0; /* Positioned at the bottom of the page */
+            bottom: 0;
         }
     </style>
 </head>
@@ -86,9 +179,82 @@
         <div class="message">
             Welcome to the YUNJUN page!
         </div>
+        <div class="todo-container">
+            <h2>To-Do List</h2>
+            <input type="text" id="todo-input" class="todo-input" placeholder="Add a new task">
+            <button class="todo-button" onclick="addTodo()">Add Task</button>
+            <ul id="todo-list" class="todo-list"></ul>
+        </div>
     </div>
+
+
+    <!-- Whack-a-Mole game section -->
+    <div class="whack-a-mole-container">
+        <h2>Whack-a-Mole</h2>
+        <div id="score">Score: 0</div>
+        <div class="mole-grid">
+            <div class="mole" onclick="whackMole(0)"></div>
+            <div class="mole" onclick="whackMole(1)"></div>
+            <div class="mole" onclick="whackMole(2)"></div>
+            <div class="mole" onclick="whackMole(3)"></div>
+            <div class="mole" onclick="whackMole(4)"></div>
+            <div class="mole" onclick="whackMole(5)"></div>
+            <div class="mole" onclick="whackMole(6)"></div>
+            <div class="mole" onclick="whackMole(7)"></div>
+            <div class="mole" onclick="whackMole(8)"></div>
+        </div>
+    </div>
+
+
     <footer>
         © 2024 Duhyeon Company
     </footer>
+
+    <script>
+
+        function addTodo() {
+            var todoInput = document.getElementById('todo-input');
+            var todoList = document.getElementById('todo-list');
+
+            if (todoInput.value.trim() !== "") {
+                var listItem = document.createElement('li');
+                listItem.className = 'todo-item';
+                listItem.innerHTML = todoInput.value + '<button onclick="removeTodo(this)">Remove</button>';
+                todoList.appendChild(listItem);
+                todoInput.value = "";
+            }
+        }
+
+        function removeTodo(button) {
+            var listItem = button.parentElement;
+            listItem.remove();
+        }
+
+
+
+        let score = 0;
+        let activeMole = null;
+        const moles = document.querySelectorAll('.mole');
+        
+        function randomMole() {
+            if (activeMole !== null) {
+                moles[activeMole].classList.remove('active');
+            }
+            activeMole = Math.floor(Math.random() * moles.length);
+            moles[activeMole].classList.add('active');
+        }
+
+        function whackMole(index) {
+            if (index === activeMole) {
+                score++;
+                document.getElementById('score').textContent = 'Score: ' + score;
+                moles[activeMole].classList.remove('active');
+                activeMole = null;
+            }
+        }
+        setInterval(randomMole, 1000);
+
+
+    </script>
 </body>
 </html>
