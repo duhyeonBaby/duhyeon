@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column; /* Stack children vertically */
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-image: url('images.jfif');
+            background-repeat: repeat;
+            background-size: auto;
+            overflow: hidden; /* Prevent scrollbars */
+        }
+        .nav-bar {
+            position: fixed;
+            top: 0; /* Fixed at the top of the page */
+            width: 100%;
+            background-color: black; /* Black background for the nav bar */
+            text-align: center; /* Center-align the navigation items */
+            padding: 20px 0; /* Increased padding for a thicker nav bar */
+            z-index: 3; /* Ensure nav bar is above other elements */
+        }
+        .nav-bar a {
+            text-decoration: none;
+            color: darkgreen; /* Dark green text color */
+            background-color: white; /* White background for the buttons */
+            padding: 12px 24px; /* Padding for larger buttons */
+            margin: 0 10px;
+            border-radius: 5px;
+            border: 2px solid green; /* Green border */
+            font-weight: bold;
+            font-size: 1.2em;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .nav-bar a.active {
+            background-color: darkgreen; /* Dark green background for the active button */
+            color: white; /* White text color for the active button */
+        }
+        .nav-bar a:hover {
+            background-color: lightgray; /* Light gray on hover */
+            color: darkgreen; /* Dark green text color on hover */
+        }
+        .message-container {
+            position: relative;
+            padding: 20px 40px; /* Increased padding for thicker container */
+            border: 2px solid green; /* Green border for the message container */
+            border-radius: 10px; /* Rounded corners for the container */
+            background-color: black; /* Black background for the container */
+            z-index: 2; /* Ensure the message is above the video */
+            text-align: center; /* Center the text horizontally */
+        }
+        .message {
+            font-size: 4em;
+            font-weight: bold;
+            background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        iframe {
+            margin-top: 20px; /* Space between message and video */
+            width: 560px; /* Set width */
+            height: 315px; /* Set height */
+            border: none;
+            z-index: 1; /* Ensure video is below the message */
+        }
+        footer {
+            background-color: black; /* Black background for the footer */
+            color: white; /* White text color */
+            text-align: center; /* Center-align the text */
+            padding: 10px 0; /* Padding around the text */
+            font-size: 1em;
+            width: 100%; /* Full width of the viewport */
+            position: absolute;
+            bottom: 0; /* Positioned at the bottom of the page */
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-bar">
+        <a href="duhyeon.html" class="active">HOME</a>
+        <a href="DUHYEONbaby.html">DUHYEON</a>
+        <a href="minjae.html">MINJAE</a>
+        <a href="yunjun.html">YUNJUN</a> <!-- Added link to YUNJUN page -->
+	<a href="hyunjun.html">HYUNJUN</a>
+    </div>
+    <div class="message-container">
+        <div class="message">
+            되겠냐고 두현아!
+        </div>
+    </div>
+    <iframe src="https://www.youtube.com/embed/fYdssjFnlEk?autoplay=1&controls=0&loop=1&playlist=fYdssjFnlEk" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    <footer>
+        © 2024 Duhyeon Company
+    </footer>
+</body>
+</html>
