@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DUHYEON</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column; /* Stack children vertically */
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: lightgray;/* Sky-blue background for the DUHYEON page */
+            overflow: hidden; /* Prevent scrollbars */
+        }
+        .nav-bar {
+            position: fixed;
+            top: 0; /* Fixed at the top of the page */
+            width: 100%;
+            background-color: black; /* Black background for the nav bar */
+            text-align: center; /* Center-align the navigation items */
+            padding: 20px 0; /* Increased padding for a thicker nav bar */
+            z-index: 3; /* Ensure nav bar is above other elements */
+        }
+        .nav-bar a {
+            text-decoration: none;
+            color: darkgreen; /* Dark green text color */
+            background-color: white; /* White background for the buttons */
+            padding: 12px 24px; /* Padding for larger buttons */
+            margin: 0 10px;
+            border-radius: 5px;
+            border: 2px solid green; /* Green border */
+            font-weight: bold;
+            font-size: 1.2em;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .nav-bar a.active {
+            background-color: darkgreen; /* Dark green background for the active button */
+            color: white; /* White text color for the active button */
+        }
+        .nav-bar a:hover {
+            background-color: lightgray; /* Light gray on hover */
+            color: darkgreen; /* Dark green text color on hover */
+        }
+        .content {
+            flex: 1; /* Allows the content to take up available space */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding-top: 80px; /* Space for fixed navbar */
+            width: 100%;
+            box-sizing: border-box; /* Includes padding in width calculation */
+        }
+        .message {
+            font-size: 2em;
+            font-weight: bold;
+            background-color: black; /* Black background for the message container */
+            color: white; /* White text color */
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        footer {
+            background-color: black; /* Black background for the footer */
+            color: white; /* White text color */
+            text-align: center; /* Center-align the text */
+            padding: 10px 0; /* Padding around the text */
+            font-size: 1em;
+            width: 100%; /* Full width of the viewport */
+            position: absolute;
+            bottom: 0; /* Positioned at the bottom of the page */
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-bar">
+        <a href="duhyeon.html">HOME</a>
+        <a href="DUHYEONbaby.html" class="active">DUHYEON</a>
+        <a href="minjae.html">MINJAE</a>
+	<a href="yunjun.html">YUNJUN</a>
+	<a href="hyunjun.html">HYUNJUN</a>
+    </div>
+    <div class="content">
+        <div class="message">
+            Welcome to the DUHYEON page!
+        </div>
+    </div>
+    <a href="index.html" class="back-button">Back to HOME</a>
+    <footer>
+        © 2024 Duhyeon Company
+    </footer>
+</body>
+</html>

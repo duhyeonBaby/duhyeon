@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HYUNJUN</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #b3cde0;
+        }
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: black;
+            text-align: center;
+            padding: 20px 0;
+            z-index: 3;
+        }
+        .nav-bar a {
+            text-decoration: none;
+            color: darkgreen;
+            background-color: white;
+            padding: 12px 24px;
+            margin: 0 10px;
+            border-radius: 5px;
+            border: 2px solid green;
+            font-weight: bold;
+            font-size: 1.2em;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .nav-bar a.active {
+            background-color: darkgreen;
+            color: white;
+        }
+        .nav-bar a:hover {
+            background-color: lightgray;
+            color: darkgreen;
+        }
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 80px;
+            width: 100%;
+            box-sizing: border-box;
+            overflow-y: auto;
+            padding-bottom: 20px;
+        }
+        .message {
+            font-size: 2em;
+            font-weight: bold;
+            background-color: black;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .wordle-container {
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid black;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: white; /* Changed background color to gray */
+            width: 100%;
+            max-width: 600px;
+        }
+        .wordle-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+        .wordle-cell {
+            width: 50px;
+            height: 50px;
+            background-color: lightgray;
+            border: 1px solid darkgray;
+            text-align: center;
+            line-height: 50px;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: black;
+        }
+        .wordle-cell.correct {
+            background-color: green;
+            color: white;
+        }
+        .wordle-cell.present {
+            background-color: yellow;
+            color: black;
+        }
+        .wordle-cell.absent {
+            background-color: gray;
+            color: white;
+        }
+        .wordle-input {
+            display: flex;
+            margin-bottom: 20px;
+            width: 100%;
+            justify-content: center;
+        }
+        .wordle-input input {
+            font-size: 1.5em;
+            text-align: center;
+            width: 300px; /* Extended width */
+            height: 50px;
+            margin: 0 5px;
+            border: 1px solid black;
+            border-radius: 5px;
+            padding: 5px;
+        }
+        .wordle-input button {
+            font-size: 1.2em;
+            padding: 10px 20px;
+            margin-top: 10px;
+            background-color: black;
+            color: white;
+            border: 2px solid green;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .wordle-input button:hover {
+            background-color: lightgray;
+            color: darkgreen;
+        }
+        footer {
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 1em;
+            width: 100%;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-bar">
+        <a href="duhyeon.html">HOME</a>
+        <a href="DUHYEONbaby.html">DUHYEON</a>
+        <a href="minjae.html">MINJAE</a>
+        <a href="yunjun.html">YUNJUN</a>
+        <a href="hyunjun.html" class="active">HYUNJUN</a>
+    </div>
+    <div class="content">
+        <div class="message">
+            Welcome to the HYUNJUN page!
+        </div>
+        <div class="wordle-container">
+            <div class="wordle-grid"></div>
+            <div class="wordle-input">
+                <input type="text" id="wordle-input" maxlength="5" placeholder="Enter guess">
+                <button onclick="submitGuess()">Submit</button>
+            </div>
+        </div>
+    </div>
+    <footer>
+        © 2024 Duhyeon Company
+    </footer>
+    <script>
+        // Expanded word list with more varied words
+        const wordleWords = ['APPLE', 'GRAPE', 'PEACH', 'LEMON', 'BERRY', 'STORM', 'BRAVE', 'CLOUD', 'SHINE', 'GRACE', 'AVOID', 'SMASH', 'PHONE', 'AFTER', 'DRIVE', 'POINT', 'SNAIL', 'SMILE', 'WEARY', 'AMONG', 'BROOM', 'STICK'];
+        let currentWord = '';
+        let attempts = 0;
+        const maxAttempts = 6;
+        const wordLength = 5;
+
+        function getRandomWord() {
+            return wordleWords[Math.floor(Math.random() * wordleWords.length)];
+        }
+
+        function startNewGame() {
+            currentWord = getRandomWord();
+            attempts = 0;
+            generateGrid();
+        }
+
+        function generateGrid() {
+            const grid = document.querySelector('.wordle-grid');
+            grid.innerHTML = '';
+            for (let i = 0; i < maxAttempts; i++) {
+                for (let j = 0; j < wordLength; j++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'wordle-cell';
+                    grid.appendChild(cell);
+                }
+            }
+        }
+
+        function submitGuess() {
+            const input = document.getElementById('wordle-input');
+            const guess = input.value.toUpperCase();
+            input.value = '';
+            if (guess.length !== wordLength) {
+                alert('Please enter a 5-letter word.');
+                return;
+            }
+            checkGuess(guess);
+        }
+
+        function checkGuess(guess) {
+            const cells = document.querySelectorAll('.wordle-cell');
+            const startIndex = attempts * wordLength;
+            const guessArray = guess.split('');
+            const wordArray = currentWord.split('');
+
+            // Count letter frequencies for the current word
+            const wordFrequency = wordArray.reduce((freq, letter) => {
+                freq[letter] = (freq[letter] || 0) + 1;
+                return freq;
+            }, {});
+
+            // First pass: Check for correct letters
+            for (let i = 0; i < wordLength; i++) {
+                const cell = cells[startIndex + i];
+                const letter = guessArray[i];
+                if (letter === wordArray[i]) {
+                    cell.classList.add('correct');
+                    cell.textContent = letter;
+                    wordFrequency[letter]--;
+                }
+            }
+
+            // Second pass: Check for present letters
+            for (let i = 0; i < wordLength; i++) {
+                const cell = cells[startIndex + i];
+                const letter = guessArray[i];
+                if (!cell.classList.contains('correct')) {
+                    if (wordArray.includes(letter) && wordFrequency[letter] > 0) {
+                        cell.classList.add('present');
+                        wordFrequency[letter]--;
+                    } else {
+                        cell.classList.add('absent');
+                    }
+                    cell.textContent = letter;
+                }
+            }
+
+            attempts++;
+            if (guess === currentWord) {
+                alert('Congratulations! You guessed the word!');
+                startNewGame(); // Start a new game after correct guess
+            } else if (attempts >= maxAttempts) {
+                alert('Game over! The correct word was ' + currentWord);
+                startNewGame(); // Start a new game after failure
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', startNewGame);
+    </script>
+</body>
+</html>

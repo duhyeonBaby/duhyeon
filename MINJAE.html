@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MINJAE</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: lightpink; /* Keep existing background color */
+        }
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: black;
+            text-align: center;
+            padding: 20px 0;
+            z-index: 3;
+        }
+        .nav-bar a {
+            text-decoration: none;
+            color: darkgreen;
+            background-color: white;
+            padding: 12px 24px;
+            margin: 0 10px;
+            border-radius: 5px;
+            border: 2px solid green;
+            font-weight: bold;
+            font-size: 1.2em;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .nav-bar a.active {
+            background-color: darkgreen;
+            color: white;
+        }
+        .nav-bar a:hover {
+            background-color: lightgray;
+            color: darkgreen;
+        }
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 80px;
+            width: 100%;
+            box-sizing: border-box;
+            overflow-y: auto;
+            padding-bottom: 20px;
+        }
+        .message {
+            font-size: 2em;
+            font-weight: bold;
+            background-color: black;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .image-container {
+            margin-top: 200px; /* Reduced margin to fit within the viewport */
+            width: 100%;
+            text-align: center;
+        }
+        .image-container img {
+            max-width: 100%; /* Increased size of the image */
+            height: auto;
+            border: 2px solid black;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Add shadow for better visibility */
+        }
+        footer {
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 1em;
+            width: 100%;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-bar">
+        <a href="duhyeon.html">HOME</a>
+        <a href="DUHYEONbaby.html">DUHYEON</a>
+        <a href="minjae.html" class="active">MINJAE</a>
+        <a href="yunjun.html">YUNJUN</a>
+        <a href="hyunjun.html">HYUNJUN</a>
+    </div>
+    <div class="content">
+        <div class="message">
+            Welcome to the MINJAE page!
+        </div>
+        <div class="image-container">
+            <img src="SDD.png" alt="SDD Image">
+        </div>
+    </div>
+    <footer>
+        © 2024 Duhyeon Company
+    </footer>
+</body>
+</html>
