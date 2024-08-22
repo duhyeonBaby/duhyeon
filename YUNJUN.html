@@ -12,154 +12,180 @@
             margin: 0;
             font-family: Arial, sans-serif;
             background-color: #b2d8b2;
-            overflow: hidden;
+            overflow: auto; /* Enable scrolling */
         }
+
         .nav-bar {
             position: fixed;
             top: 0;
             width: 100%;
             background-color: black;
             text-align: center;
-            padding: 20px 0;
+            padding: 1rem;
             z-index: 3;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
         }
+
         .nav-bar a {
             text-decoration: none;
             color: darkgreen;
             background-color: white;
-            padding: 12px 24px;
-            margin: 0 10px;
-            border-radius: 5px;
-            border: 2px solid green;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.3125rem;
+            border: 0.125rem solid green;
             font-weight: bold;
-            font-size: 1.2em;
+            font-size: 1.2rem;
             transition: background-color 0.3s, color 0.3s;
         }
+
         .nav-bar a.active {
             background-color: darkgreen;
             color: white;
         }
+
         .nav-bar a:hover {
             background-color: lightgray;
             color: darkgreen;
         }
+
         .content {
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding-top: 80px;
+            padding-top: 6rem;
             width: 100%;
             box-sizing: border-box;
         }
+
         .message {
-            font-size: 2em;
+            font-size: 2rem;
             font-weight: bold;
             background-color: black;
             color: white;
-            padding: 20px;
-            border-radius: 10px;
+            padding: 1rem;
+            border-radius: 0.625rem;
             text-align: center;
         }
+
         .todo-container {
-            margin-top: 30px;
+            margin-top: 2rem;
             background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
+            padding: 1rem;
+            border-radius: 0.625rem;
+            box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 25rem;
         }
+
         .todo-container h2 {
             margin: 0;
             text-align: center;
             color: darkgreen;
         }
+
         .todo-input {
-            width: calc(100% - 26px);
-            padding: 10px;
-            margin: 10px 0;
-            border: 2px solid green;
-            border-radius: 5px;
+            width: calc(100% - 2rem);
+            padding: 0.625rem;
+            margin: 0.625rem 0;
+            border: 0.125rem solid green;
+            border-radius: 0.3125rem;
         }
+
         .todo-button {
             width: 100%;
-            padding: 10px;
+            padding: 0.625rem;
             background-color: darkgreen;
             color: white;
             border: none;
-            border-radius: 5px;
-            font-size: 1em;
+            border-radius: 0.3125rem;
+            font-size: 1rem;
             cursor: pointer;
         }
+
         .todo-button:hover {
             background-color: green;
         }
+
         .todo-list {
             list-style: none;
             padding: 0;
         }
+
         .todo-item {
-            padding: 10px;
+            padding: 0.625rem;
             background-color: lightgray;
-            border-radius: 5px;
-            margin: 5px 0;
+            border-radius: 0.3125rem;
+            margin: 0.625rem 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+
         .todo-item button {
             background-color: red;
             color: white;
             border: none;
-            border-radius: 3px;
+            border-radius: 0.1875rem;
             cursor: pointer;
-            padding: 5px 10px;
+            padding: 0.3125rem 0.625rem;
         }
 
-
-	/* Whack-a-Mole game styles */
+        /* Whack-a-Mole game styles */
         .whack-a-mole-container {
-    		margin: 30px auto 40px; /* Center the container horizontally */
-    		background-color: white;
-    		padding: 20px;
-    		border-radius: 10px;
-    		box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    		width: 300px;
-    		text-align: center;
-	}
+            margin: 2rem auto 4rem; /* Center horizontally and add space below */
+            background-color: white;
+            padding: 1rem;
+            border-radius: 0.625rem;
+            box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 25rem; /* Match the width of the todo-container */
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden; /* Hide overflow to keep layout clean */
+        }
+
         .mole-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(3, 80px);
             grid-gap: 10px;
-	    justify-content: center;
+            justify-content: center;
+            margin: 0 auto; /* Center grid within the container */
         }
+
         .mole {
             width: 80px;
             height: 80px;
             background-color: gray;
             border-radius: 50%;
-            position: relative;
             cursor: pointer;
         }
+
         .mole.active {
             background-color: brown;
         }
-        #score {
-            font-size: 1.5em;
-            color: darkgreen;
-            margin-bottom: 10px;
-        }
 
+        #score {
+            font-size: 1.5rem;
+            color: darkgreen;
+            margin-bottom: 1rem;
+        }
 
         footer {
             background-color: black;
             color: white;
             text-align: center;
-            padding: 10px 0;
-            font-size: 1em;
+            padding: 1rem;
+            font-size: 1rem;
             width: 100%;
-            position: absolute;
+            position: relative; /* Ensure the footer stays at the bottom */
             bottom: 0;
         }
     </style>
@@ -170,7 +196,7 @@
         <a href="DUHYEONbaby.html">DUHYEON</a>
         <a href="MINJAE.html">MINJAE</a>
         <a href="YUNJUN.html" class="active">YUNJUN</a>
-	<a href="HYUNJUN.html">HYUNJUN</a>
+        <a href="HYUNJUN.html">HYUNJUN</a>
     </div>
     <div class="content">
         <div class="message">
@@ -182,33 +208,30 @@
             <button class="todo-button" onclick="addTodo()">Add Task</button>
             <ul id="todo-list" class="todo-list"></ul>
         </div>
-    </div>
 
-
-    <!-- Whack-a-Mole game section -->
-    <div class="whack-a-mole-container">
-        <h2>Whack-a-Mole</h2>
-        <div id="score">Score: 0</div>
-        <div class="mole-grid">
-            <div class="mole" onclick="whackMole(0)"></div>
-            <div class="mole" onclick="whackMole(1)"></div>
-            <div class="mole" onclick="whackMole(2)"></div>
-            <div class="mole" onclick="whackMole(3)"></div>
-            <div class="mole" onclick="whackMole(4)"></div>
-            <div class="mole" onclick="whackMole(5)"></div>
-            <div class="mole" onclick="whackMole(6)"></div>
-            <div class="mole" onclick="whackMole(7)"></div>
-            <div class="mole" onclick="whackMole(8)"></div>
+        <!-- Whack-a-Mole game section -->
+        <div class="whack-a-mole-container">
+            <h2>Whack-a-Mole</h2>
+            <div id="score">Score: 0</div>
+            <div class="mole-grid">
+                <div class="mole" onclick="whackMole(0)"></div>
+                <div class="mole" onclick="whackMole(1)"></div>
+                <div class="mole" onclick="whackMole(2)"></div>
+                <div class="mole" onclick="whackMole(3)"></div>
+                <div class="mole" onclick="whackMole(4)"></div>
+                <div class="mole" onclick="whackMole(5)"></div>
+                <div class="mole" onclick="whackMole(6)"></div>
+                <div class="mole" onclick="whackMole(7)"></div>
+                <div class="mole" onclick="whackMole(8)"></div>
+            </div>
         </div>
     </div>
-
 
     <footer>
         © 2024 Duhyeon Company
     </footer>
 
     <script>
-
         function addTodo() {
             var todoInput = document.getElementById('todo-input');
             var todoList = document.getElementById('todo-list');
@@ -226,8 +249,6 @@
             var listItem = button.parentElement;
             listItem.remove();
         }
-
-
 
         let score = 0;
         let activeMole = null;
@@ -250,8 +271,6 @@
             }
         }
         setInterval(randomMole, 1000);
-
-
     </script>
 </body>
 </html>
