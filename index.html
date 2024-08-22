@@ -15,9 +15,10 @@
             font-family: Arial, sans-serif;
             background-image: url('images.jfif');
             background-repeat: repeat;
-            background-size: auto;
+            background-size: cover; /* Ensure background covers the viewport */
             overflow: hidden; /* Prevent scrollbars */
         }
+
         .nav-bar {
             position: fixed;
             top: 0; /* Fixed at the top of the page */
@@ -26,27 +27,35 @@
             text-align: center; /* Center-align the navigation items */
             padding: 20px 0; /* Increased padding for a thicker nav bar */
             z-index: 3; /* Ensure nav bar is above other elements */
+            display: flex;
+            flex-wrap: wrap; /* Allow buttons to wrap */
+            justify-content: center; /* Center buttons horizontally */
         }
+
         .nav-bar a {
             text-decoration: none;
             color: darkgreen; /* Dark green text color */
             background-color: white; /* White background for the buttons */
             padding: 12px 24px; /* Padding for larger buttons */
-            margin: 0 10px;
+            margin: 5px; /* Margin to ensure spacing */
             border-radius: 5px;
             border: 2px solid green; /* Green border */
             font-weight: bold;
             font-size: 1.2em;
             transition: background-color 0.3s, color 0.3s;
+            display: inline-block; /* Allow buttons to adjust based on content */
         }
+
         .nav-bar a.active {
             background-color: darkgreen; /* Dark green background for the active button */
             color: white; /* White text color for the active button */
         }
+
         .nav-bar a:hover {
             background-color: lightgray; /* Light gray on hover */
             color: darkgreen; /* Dark green text color on hover */
         }
+
         .message-container {
             position: relative;
             padding: 20px 40px; /* Increased padding for thicker container */
@@ -55,7 +64,9 @@
             background-color: black; /* Black background for the container */
             z-index: 2; /* Ensure the message is above the video */
             text-align: center; /* Center the text horizontally */
+            margin-top: 80px; /* Margin top to avoid overlap with the nav-bar */
         }
+
         .message {
             font-size: 4em;
             font-weight: bold;
@@ -64,6 +75,7 @@
             background-clip: text;
             color: transparent;
         }
+
         iframe {
             margin-top: 20px; /* Space between message and video */
             width: 560px; /* Set width */
@@ -71,6 +83,7 @@
             border: none;
             z-index: 1; /* Ensure video is below the message */
         }
+
         footer {
             background-color: black; /* Black background for the footer */
             color: white; /* White text color */
@@ -81,6 +94,22 @@
             position: absolute;
             bottom: 0; /* Positioned at the bottom of the page */
         }
+
+        @media (max-width: 600px) {
+            .nav-bar a {
+                font-size: 1em; /* Smaller font size on smaller screens */
+                padding: 10px 20px; /* Adjust padding for smaller screens */
+            }
+
+            .message {
+                font-size: 2.5em; /* Smaller font size for message on smaller screens */
+            }
+
+            iframe {
+                width: 100%; /* Full width of the viewport */
+                height: auto; /* Auto height to maintain aspect ratio */
+            }
+        }
     </style>
 </head>
 <body>
@@ -88,8 +117,8 @@
         <a href="index.html" class="active">HOME</a>
         <a href="DUHYEONbaby.html">DUHYEON</a>
         <a href="MINJAE.html">MINJAE</a>
-        <a href="YUNJUN.html">YUNJUN</a> <!-- Added link to YUNJUN page -->
-	<a href="HYUNJUN.html">HYUNJUN</a>
+        <a href="YUNJUN.html">YUNJUN</a>
+        <a href="HYUNJUN.html">HYUNJUN</a>
     </div>
     <div class="message-container">
         <div class="message">
