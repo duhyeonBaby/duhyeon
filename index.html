@@ -7,64 +7,65 @@
     <style>
         body {
             display: flex;
-            flex-direction: column; /* Stack children vertically */
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
             background-image: url('images.jfif');
-            background-repeat: repeat; /* Ensure the background image repeats */
-            background-size: auto; /* Maintain the original size of the background image */
-            overflow: hidden; /* Prevent scrollbars */
+            background-repeat: repeat;
+            background-size: auto;
+            overflow: auto;
         }
 
         .nav-bar {
             position: fixed;
-            top: 0; /* Fixed at the top of the page */
+            top: 0;
             width: 100%;
-            background-color: black; /* Black background for the nav bar */
-            text-align: center; /* Center-align the navigation items */
-            padding: 20px 0; /* Increased padding for a thicker nav bar */
-            z-index: 3; /* Ensure nav bar is above other elements */
+            background-color: black;
+            text-align: center;
+            padding: 20px 0;
+            z-index: 3;
             display: flex;
-            flex-wrap: wrap; /* Allow buttons to wrap */
-            justify-content: center; /* Center buttons horizontally */
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .nav-bar a {
             text-decoration: none;
-            color: darkgreen; /* Dark green text color */
-            background-color: white; /* White background for the buttons */
-            padding: 12px 24px; /* Padding for larger buttons */
-            margin: 5px; /* Margin to ensure spacing */
+            color: darkgreen;
+            background-color: white;
+            padding: 12px 24px;
+            margin: 5px;
             border-radius: 5px;
-            border: 2px solid green; /* Green border */
+            border: 2px solid green;
             font-weight: bold;
             font-size: 1.2em;
             transition: background-color 0.3s, color 0.3s;
-            display: inline-block; /* Allow buttons to adjust based on content */
+            display: inline-block;
         }
 
         .nav-bar a.active {
-            background-color: darkgreen; /* Dark green background for the active button */
-            color: white; /* White text color for the active button */
+            background-color: darkgreen;
+            color: white;
         }
 
         .nav-bar a:hover {
-            background-color: lightgray; /* Light gray on hover */
-            color: darkgreen; /* Dark green text color on hover */
+            background-color: lightgray;
+            color: darkgreen;
         }
 
         .message-container {
             position: relative;
-            padding: 20px 40px; /* Increased padding for thicker container */
-            border: 2px solid green; /* Green border for the message container */
-            border-radius: 10px; /* Rounded corners for the container */
-            background-color: black; /* Black background for the container */
-            z-index: 2; /* Ensure the message is above the video */
-            text-align: center; /* Center the text horizontally */
-            margin-top: 80px; /* Margin top to avoid overlap with the nav-bar */
+            padding: 20px 40px;
+            border: 10px solid darkred;
+            border-radius: 20px;
+            background-color: black;
+            z-index: 2;
+            text-align: center;
+            margin-top: 80px;
+            overflow: hidden;
         }
 
         .message {
@@ -74,40 +75,70 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            animation: glitter 1.5s infinite, wave 2s infinite; /* Apply glitter and wave effects */
+        }
+        .message span {
+            display: inline-block;
+            color: transparent;
+            background: linear-gradient(90deg, white, red, blue, white);
+            -webkit-background-clip: text;
+            animation: wave 1s infinite;
         }
 
+        @keyframes glitter {
+            0% { background-position: 0 0; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0 0; }
+        }
+
+        @keyframes wave {
+            0% { transform: translateY(-10px); }
+	    50% { transform: translateY(5px);}
+            100% { transform: translateY(-10px); }
+        }
+
+	.message span:nth-child(1) { animation-delay: 0s; }
+        .message span:nth-child(2) { animation-delay: 0.1s; }
+        .message span:nth-child(3) { animation-delay: 0.2s; }
+        .message span:nth-child(4) { animation-delay: 0.2s; }
+        .message span:nth-child(5) { animation-delay: 0.3s; }
+        .message span:nth-child(6) { animation-delay: 0.4s; }
+        .message span:nth-child(7) { animation-delay: 0.5s; }
+	.message span:nth-child(8) { animation-delay: 0.5s; }
+	.message span:nth-child(9) { animation-delay: 0.6s; }
+
         iframe {
-            margin-top: 20px; /* Space between message and video */
-            width: 560px; /* Set width */
-            height: 315px; /* Set height */
+            margin-top: 20px;
+            width: 560px;
+            height: 315px;
             border: none;
-            z-index: 1; /* Ensure video is below the message */
+            z-index: 1;
         }
 
         footer {
-            background-color: black; /* Black background for the footer */
-            color: white; /* White text color */
-            text-align: center; /* Center-align the text */
-            padding: 10px 0; /* Padding around the text */
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
             font-size: 1em;
-            width: 100%; /* Full width of the viewport */
+            width: 100%;
             position: absolute;
-            bottom: 0; /* Positioned at the bottom of the page */
+            bottom: 0;
         }
 
         @media (max-width: 600px) {
             .nav-bar a {
-                font-size: 1em; /* Smaller font size on smaller screens */
-                padding: 10px 20px; /* Adjust padding for smaller screens */
+                font-size: 1em;
+                padding: 10px 20px;
             }
 
             .message {
-                font-size: 2.5em; /* Smaller font size for message on smaller screens */
+                font-size: 2.5em;
             }
 
             iframe {
-                width: 100%; /* Full width of the viewport */
-                height: auto; /* Auto height to maintain aspect ratio */
+                width: 100%;
+                height: auto;
             }
         }
     </style>
@@ -122,7 +153,7 @@
     </div>
     <div class="message-container">
         <div class="message">
-            두현 온라인 한국  
+            <span>두</span><span>현</span><span></span> <span>온</span><span>라</span><span>인</span> <span></span><span>한</span><span>국</span>
         </div>
     </div>
     <iframe src="https://www.youtube.com/embed/fYdssjFnlEk?autoplay=1&controls=0&loop=1&playlist=fYdssjFnlEk" allow="autoplay; encrypted-media" allowfullscreen></iframe>
