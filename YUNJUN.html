@@ -5,14 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YUNJUN</title>
     <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
+        html, body {
+            overflow-x: hidden; /* 좌우 스크롤을 없앰 */
             margin: 0;
+            padding: 0;
+            width: 100%; /* 페이지가 화면을 넘어가지 않도록 설정 */
+            height: 100%;
             font-family: Arial, sans-serif;
             background-color: #b2d8b2;
-            overflow: auto; /* Enable scrolling */
+            display: flex;
+            flex-direction: column;
         }
 
         .nav-bar {
@@ -138,18 +140,18 @@
 
         /* Whack-a-Mole game styles */
         .whack-a-mole-container {
-            margin: 2rem auto 4rem; /* Center horizontally and add space below */
+            margin: 2rem auto 4rem;
             background-color: white;
             padding: 1rem;
             border-radius: 0.625rem;
             box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.1);
             width: 90%;
-            max-width: 25rem; /* Match the width of the todo-container */
+            max-width: 25rem;
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
-            overflow: hidden; /* Hide overflow to keep layout clean */
+            overflow: hidden;
         }
 
         .mole-grid {
@@ -157,7 +159,7 @@
             grid-template-columns: repeat(3, 80px);
             grid-gap: 10px;
             justify-content: center;
-            margin: 0 auto; /* Center grid within the container */
+            margin: 0 auto;
         }
 
         .mole {
@@ -185,7 +187,7 @@
             padding: 1rem;
             font-size: 1rem;
             width: 100%;
-            position: relative; /* Ensure the footer stays at the bottom */
+            position: relative;
             bottom: 0;
         }
     </style>
