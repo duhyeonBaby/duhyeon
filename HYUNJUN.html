@@ -2,150 +2,310 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HYUNJUN</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HYUNJUN | Wordle</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    
     <style>
+        :root {
+            --color-correct: #538d4e;
+            --color-present: #b59f3b;
+            --color-absent: #3a3a3c;
+            --color-bg: #121213;
+            --color-text: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --tile-border-idle: #3a3a3c;
+            --tile-border-active: #818384;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             display: flex;
             flex-direction: column;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #b3cde0;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            overflow-x: hidden;
+            /* Animated Background */
+            background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #121213);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
         }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Navigation --- */
         .nav-bar {
-            position: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem 0;
+            background: rgba(18, 18, 19, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
             top: 0;
-            width: 100%;
-            background-color: black;
-            text-align: center;
-            padding: 20px 0;
-            z-index: 3;
+            z-index: 100;
+            border-bottom: 1px solid var(--glass-border);
+            flex-wrap: wrap;
+            gap: 10px;
         }
+
         .nav-bar a {
             text-decoration: none;
-            color: darkgreen;
-            background-color: white;
-            padding: 12px 24px;
-            margin: 0 10px;
-            border-radius: 5px;
-            border: 2px solid green;
-            font-weight: bold;
-            font-size: 1.2em;
-            transition: background-color 0.3s, color 0.3s;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            letter-spacing: 0.5px;
         }
-        .nav-bar a.active {
-            background-color: darkgreen;
-            color: white;
+
+        .nav-bar a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: var(--color-correct);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
         }
+
         .nav-bar a:hover {
-            background-color: lightgray;
-            color: darkgreen;
+            color: white;
+            background: var(--glass-bg);
         }
+
+        .nav-bar a:hover::after {
+            width: 80%;
+        }
+
+        .nav-bar a.active {
+            color: var(--color-correct);
+            background: rgba(83, 141, 78, 0.1);
+        }
+
+        /* --- Main Layout --- */
         .content {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-top: 80px;
-            width: 100%;
-            box-sizing: border-box;
-            overflow-y: auto;
-            padding-bottom: 20px;
-        }
-        .message {
-            font-size: 2em;
-            font-weight: bold;
-            background-color: black;
-            color: white;
+            justify-content: center;
             padding: 20px;
-            border-radius: 10px;
-            text-align: center;
+            width: 100%;
         }
-        .wordle-container {
-            margin-top: 40px;
+
+        .title-area {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .title-area h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .title-area p {
+            margin: 5px 0 0;
+            color: #818384;
+            font-size: 0.9rem;
+        }
+
+        /* --- Game Board --- */
+        .game-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            border: 2px solid black;
-            border-radius: 10px;
-            padding: 20px;
-            background-color: white; /* Changed background color to gray */
-            width: 100%;
-            max-width: 600px;
+            justify-content: center;
+            /* Zoom resistance logic */
+            width: min(100%, 500px); 
         }
+
         .wordle-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 5px;
+            padding: 10px;
             margin-bottom: 20px;
         }
+
         .wordle-cell {
-            width: 50px;
-            height: 50px;
-            background-color: lightgray;
-            border: 1px solid darkgray;
-            text-align: center;
-            line-height: 50px;
-            font-size: 1.5em;
-            font-weight: bold;
-            color: black;
-        }
-        .wordle-cell.correct {
-            background-color: green;
+            width: clamp(3rem, 8vw, 3.8rem); /* Responsive sizing */
+            height: clamp(3rem, 8vw, 3.8rem);
+            border: 2px solid var(--tile-border-idle);
+            background-color: transparent;
             color: white;
-        }
-        .wordle-cell.present {
-            background-color: yellow;
-            color: black;
-        }
-        .wordle-cell.absent {
-            background-color: gray;
-            color: white;
-        }
-        .wordle-input {
             display: flex;
-            margin-bottom: 20px;
-            width: 100%;
             justify-content: center;
+            align-items: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: border-color 0.1s;
+            user-select: none;
         }
-        .wordle-input input {
-            font-size: 1.5em;
-            text-align: center;
-            width: 300px; /* Extended width */
-            height: 50px;
-            margin: 0 5px;
-            border: 1px solid black;
-            border-radius: 5px;
-            padding: 5px;
+
+        /* --- Animations --- */
+        
+        /* When typing a letter */
+        .wordle-cell.pop {
+            animation: pop 0.1s ease-in-out;
+            border-color: var(--tile-border-active);
         }
-        .wordle-input button {
-            font-size: 1.2em;
-            padding: 10px 20px;
-            margin-top: 10px;
-            background-color: black;
-            color: white;
-            border: 2px solid green;
-            border-radius: 5px;
+
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Flip animation for revealing */
+        .wordle-cell.flip {
+            animation: flip 0.6s ease-in forwards;
+        }
+
+        @keyframes flip {
+            0% { transform: rotateX(0); background-color: transparent; border-color: var(--tile-border-active); }
+            45% { transform: rotateX(90deg); background-color: transparent; border-color: var(--tile-border-active); }
+            55% { transform: rotateX(90deg); background-color: var(--bg-color); border-color: var(--bg-color); }
+            100% { transform: rotateX(0); background-color: var(--bg-color); border-color: var(--bg-color); }
+        }
+
+        /* Shake for invalid words */
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(1px); }
+            10% { transform: translateX(-1px); }
+            20% { transform: translateX(-3px); }
+            30% { transform: translateX(3px); }
+            40% { transform: translateX(1px); }
+            50% { transform: translateX(-1px); }
+            60% { transform: translateX(-3px); }
+            70% { transform: translateX(3px); }
+            80% { transform: translateX(-1px); }
+            90% { transform: translateX(1px); }
+        }
+
+        /* --- Coloring Classes (applied via JS) --- */
+        .wordle-cell.correct { --bg-color: var(--color-correct); }
+        .wordle-cell.present { --bg-color: var(--color-present); }
+        .wordle-cell.absent { --bg-color: var(--color-absent); }
+
+        /* --- Controls & Toast --- */
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button.primary-btn {
+            background-color: var(--color-text);
+            color: black;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
             cursor: pointer;
-            transition: background-color 0.3s, color 0.3s;
+            transition: transform 0.2s, opacity 0.2s;
+            box-shadow: 0 4px 15px rgba(255,255,255,0.2);
         }
-        .wordle-input button:hover {
-            background-color: lightgray;
-            color: darkgreen;
+
+        button.primary-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
         }
+
+        button.primary-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Toast Notification */
+        #toast-container {
+            position: fixed;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background-color: white;
+            color: black;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         footer {
-            background-color: black;
-            color: white;
+            padding: 20px;
             text-align: center;
-            padding: 10px 0;
-            font-size: 1em;
-            width: 100%;
-            position: relative;
+            color: #818384;
+            font-size: 0.8rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        /* Mobile Input Helper (Invisible) */
+        #hidden-input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        /* Mobile Keyboard trigger area */
+        .mobile-keyboard-trigger {
+            display: none; /* Hidden by default, shown in JS if touch detected */
+            margin-top: 15px;
+            color: #818384;
+            font-size: 0.8rem;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            .title-area h1 { font-size: 2rem; }
+            .mobile-keyboard-trigger { display: block; }
         }
     </style>
 </head>
 <body>
+    <div id="toast-container"></div>
+
     <div class="nav-bar">
         <a href="index.html">HOME</a>
         <a href="DUHYEONbaby.html">DUHYEON</a>
@@ -153,111 +313,240 @@
         <a href="YUNJUN.html">YUNJUN</a>
         <a href="HYUNJUN.html" class="active">HYUNJUN</a>
     </div>
+
     <div class="content">
-        <div class="message">
-            Welcome to the HYUNJUN page!
+        <div class="title-area">
+            <h1>HYUNJUN</h1>
+            <p>Guess the hidden word</p>
         </div>
-        <div class="wordle-container">
-            <div class="wordle-grid"></div>
-            <div class="wordle-input">
-                <input type="text" id="wordle-input" maxlength="5" placeholder="Enter guess">
-                <button onclick="submitGuess()">Submit</button>
+
+        <div class="game-container">
+            <div class="wordle-grid" id="grid"></div>
+            <input type="text" id="hidden-input" autocomplete="off">
+            
+            <div class="controls">
+                <button class="primary-btn" onclick="triggerEnter()">Submit (Enter)</button>
+                <button class="primary-btn" style="background: #3a3a3c; color: white;" onclick="startNewGame()">Restart</button>
             </div>
+            <div class="mobile-keyboard-trigger" onclick="focusInput()">Tap here to enable keyboard</div>
         </div>
     </div>
+
     <footer>
-        © 2024 Duhyeon Company
+        © 2024 Duhyeon Company | Engineering Division
     </footer>
+
     <script>
-        // Expanded word list with more varied words
-        const wordleWords = ['APPLE', 'GRAPE', 'PEACH', 'LEMON', 'BERRY', 'STORM', 'BRAVE', 'CLOUD', 'SHINE', 'GRACE', 'AVOID', 'SMASH', 'PHONE', 'AFTER', 'DRIVE', 'POINT', 'SNAIL', 'SMILE', 'WEARY', 'AMONG', 'BROOM', 'STICK'];
+        // Enhanced Dictionary
+        const wordleWords = [
+            'APPLE', 'GRAPE', 'PEACH', 'LEMON', 'BERRY', 'STORM', 'BRAVE', 
+            'CLOUD', 'SHINE', 'GRACE', 'AVOID', 'SMASH', 'PHONE', 'AFTER', 
+            'DRIVE', 'POINT', 'SNAIL', 'SMILE', 'WEARY', 'AMONG', 'BROOM', 
+            'STICK', 'ROBOT', 'PIXEL', 'CACHE', 'LOGIC', 'INPUT', 'STACK',
+            'ARRAY', 'CLASS', 'DEBUG', 'REACT', 'LINUX'
+        ];
+
         let currentWord = '';
         let attempts = 0;
+        let currentGuess = ''; // We store the guess string directly now
         const maxAttempts = 6;
         const wordLength = 5;
+        let isGameOver = false;
 
-        function getRandomWord() {
-            return wordleWords[Math.floor(Math.random() * wordleWords.length)];
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            startNewGame();
+            
+            // Global Keyboard Listener
+            document.addEventListener('keydown', handleKeydown);
+            
+            // Mobile Input Listener
+            const hiddenInput = document.getElementById('hidden-input');
+            hiddenInput.addEventListener('input', (e) => {
+                const val = e.target.value;
+                if(val.length > 0) {
+                    const char = val[val.length-1].toUpperCase();
+                    if(/[A-Z]/.test(char)) addLetter(char);
+                    e.target.value = "";
+                }
+            });
+            hiddenInput.addEventListener('keydown', (e) => {
+                 if (e.key === 'Backspace') {
+                    deleteLetter();
+                 }
+                 if (e.key === 'Enter') {
+                    submitGuess();
+                 }
+            });
+        });
+
+        function focusInput() {
+            document.getElementById('hidden-input').focus();
         }
 
         function startNewGame() {
-            currentWord = getRandomWord();
+            currentWord = wordleWords[Math.floor(Math.random() * wordleWords.length)];
+            // For debugging: console.log(currentWord); 
             attempts = 0;
+            currentGuess = '';
+            isGameOver = false;
             generateGrid();
+            showToast("New Game Started!");
         }
 
         function generateGrid() {
-            const grid = document.querySelector('.wordle-grid');
+            const grid = document.getElementById('grid');
             grid.innerHTML = '';
-            for (let i = 0; i < maxAttempts; i++) {
-                for (let j = 0; j < wordLength; j++) {
-                    const cell = document.createElement('div');
-                    cell.className = 'wordle-cell';
-                    grid.appendChild(cell);
+            for (let i = 0; i < maxAttempts * wordLength; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'wordle-cell';
+                cell.id = `cell-${i}`;
+                grid.appendChild(cell);
+            }
+        }
+
+        // Handle Inputs
+        function handleKeydown(e) {
+            if (isGameOver) return;
+
+            if (e.key === 'Enter') {
+                submitGuess();
+            } else if (e.key === 'Backspace') {
+                deleteLetter();
+            } else if (/^[a-zA-Z]$/.test(e.key)) {
+                addLetter(e.key.toUpperCase());
+            }
+        }
+
+        function triggerEnter() {
+            if (!isGameOver) submitGuess();
+        }
+
+        function addLetter(letter) {
+            if (currentGuess.length < wordLength) {
+                currentGuess += letter;
+                updateGridVisuals();
+                // Add pop animation to the specific cell
+                const cellIndex = (attempts * wordLength) + currentGuess.length - 1;
+                const cell = document.getElementById(`cell-${cellIndex}`);
+                cell.classList.remove('pop');
+                void cell.offsetWidth; // trigger reflow
+                cell.classList.add('pop');
+            }
+        }
+
+        function deleteLetter() {
+            if (currentGuess.length > 0) {
+                currentGuess = currentGuess.slice(0, -1);
+                updateGridVisuals();
+            }
+        }
+
+        function updateGridVisuals() {
+            const startIndex = attempts * wordLength;
+            for (let i = 0; i < wordLength; i++) {
+                const cell = document.getElementById(`cell-${startIndex + i}`);
+                cell.textContent = currentGuess[i] || '';
+                if (!currentGuess[i]) {
+                    cell.classList.remove('pop');
                 }
             }
         }
 
         function submitGuess() {
-            const input = document.getElementById('wordle-input');
-            const guess = input.value.toUpperCase();
-            input.value = '';
-            if (guess.length !== wordLength) {
-                alert('Please enter a 5-letter word.');
+            if (currentGuess.length !== wordLength) {
+                shakeRow();
+                showToast("Not enough letters");
                 return;
             }
-            checkGuess(guess);
+
+            checkGuess();
         }
 
-        function checkGuess(guess) {
-            const cells = document.querySelectorAll('.wordle-cell');
+        function shakeRow() {
+            const grid = document.getElementById('grid');
             const startIndex = attempts * wordLength;
-            const guessArray = guess.split('');
-            const wordArray = currentWord.split('');
+            // In a real implementation you might wrap rows in divs, 
+            // here we shake the whole grid or just apply class to cells
+            // Simpler: Shake the grid container lightly
+            grid.classList.add('shake');
+            setTimeout(() => grid.classList.remove('shake'), 500);
+        }
 
-            // Count letter frequencies for the current word
+        function checkGuess() {
+            const startIndex = attempts * wordLength;
+            const guessArray = currentGuess.split('');
+            const wordArray = currentWord.split('');
+            
+            // Frequency map for logic
             const wordFrequency = wordArray.reduce((freq, letter) => {
                 freq[letter] = (freq[letter] || 0) + 1;
                 return freq;
             }, {});
 
-            // First pass: Check for correct letters
-            for (let i = 0; i < wordLength; i++) {
-                const cell = cells[startIndex + i];
-                const letter = guessArray[i];
-                if (letter === wordArray[i]) {
-                    cell.classList.add('correct');
-                    cell.textContent = letter;
-                    wordFrequency[letter]--;
+            // Store results to apply sequentially
+            const results = Array(wordLength).fill('absent');
+            
+            // 1. Find Correct
+            guessArray.forEach((char, i) => {
+                if (char === wordArray[i]) {
+                    results[i] = 'correct';
+                    wordFrequency[char]--;
                 }
+            });
+
+            // 2. Find Present
+            guessArray.forEach((char, i) => {
+                if (results[i] !== 'correct' && wordFrequency[char] > 0) {
+                    results[i] = 'present';
+                    wordFrequency[char]--;
+                }
+            });
+
+            // Apply animations with delay
+            for (let i = 0; i < wordLength; i++) {
+                const cell = document.getElementById(`cell-${startIndex + i}`);
+                setTimeout(() => {
+                    cell.classList.add('flip');
+                    cell.classList.add(results[i]);
+                }, i * 250); // 250ms delay between each tile
             }
 
-            // Second pass: Check for present letters
-            for (let i = 0; i < wordLength; i++) {
-                const cell = cells[startIndex + i];
-                const letter = guessArray[i];
-                if (!cell.classList.contains('correct')) {
-                    if (wordArray.includes(letter) && wordFrequency[letter] > 0) {
-                        cell.classList.add('present');
-                        wordFrequency[letter]--;
+            // Check win/loss after animations finish
+            setTimeout(() => {
+                if (currentGuess === currentWord) {
+                    showToast("Impressive! You Won! 🎉");
+                    isGameOver = true;
+                } else {
+                    attempts++;
+                    if (attempts >= maxAttempts) {
+                        showToast(`Game Over! Word was: ${currentWord}`);
+                        isGameOver = true;
                     } else {
-                        cell.classList.add('absent');
+                        currentGuess = ''; // Reset for next row
                     }
-                    cell.textContent = letter;
                 }
-            }
-
-            attempts++;
-            if (guess === currentWord) {
-                alert('Congratulations! You guessed the word!');
-                startNewGame(); // Start a new game after correct guess
-            } else if (attempts >= maxAttempts) {
-                alert('Game over! The correct word was ' + currentWord);
-                startNewGame(); // Start a new game after failure
-            }
+            }, wordLength * 250 + 100);
         }
 
-        document.addEventListener('DOMContentLoaded', startNewGame);
+        // Custom Toast System
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            container.appendChild(toast);
+
+            // Trigger animation
+            requestAnimationFrame(() => {
+                toast.classList.add('show');
+            });
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
     </script>
 </body>
 </html>
