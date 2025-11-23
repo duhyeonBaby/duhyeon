@@ -2,142 +2,147 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HYUNJUN PARTY</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HYUNJUN CLUB</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.15);
-            --blur-amount: 15px;
-            --crystal-color-1: #a8edea;
-            --crystal-color-2: #fed6e3;
+            --neon-blue: #00f3ff;
+            --neon-pink: #ff00ff;
+            --glass-bg: rgba(20, 20, 20, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.1);
         }
+
+        * { box-sizing: border-box; }
 
         body {
             margin: 0;
-            min-height: 100vh;
+            height: 100vh;
             font-family: 'Poppins', sans-serif;
+            background-color: #000;
+            color: white;
+            overflow: hidden; /* CRITICAL: Prevents scroll crash on mobile */
             display: flex;
             flex-direction: column;
-            /* Deep, rich moving gradient background to enhance glass effect */
-            background: linear-gradient(45deg, #020024, #090979, #00d4ff, #7a00cc);
-            background-size: 400% 400%;
-            animation: gradientBG 20s ease infinite;
-            color: white;
-            overflow-x: hidden; /* Prevent scrollbars from effects */
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* --- Background Effects --- */
+        .club-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+            z-index: -2;
         }
 
-        /* --- Highly Transparent Glass Nav Bar --- */
+        /* Strobe Light Overlay */
+        .strobe-light {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: white;
+            opacity: 0;
+            pointer-events: none;
+            z-index: -1;
+            mix-blend-mode: overlay;
+        }
+
+        .strobe-active {
+            animation: strobe Flash 0.1s infinite;
+        }
+
+        @keyframes strobe {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 0.15; }
+        }
+
+        /* Lasers */
+        .laser-beam {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 200vmax; height: 2px;
+            background: var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue);
+            opacity: 0;
+            transform-origin: left center;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .lasers-active .laser-beam {
+            opacity: 0.8;
+            animation: laserSpin 4s linear infinite;
+        }
+
+        .lasers-active .laser-beam:nth-child(2) { animation-delay: -1s; background: var(--neon-pink); box-shadow: 0 0 10px var(--neon-pink); }
+        .lasers-active .laser-beam:nth-child(3) { animation-delay: -2s; background: lime; box-shadow: 0 0 10px lime; }
+        .lasers-active .laser-beam:nth-child(4) { animation-delay: -3s; background: yellow; box-shadow: 0 0 10px yellow; }
+
+        @keyframes laserSpin {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* --- Navigation --- */
         .nav-bar {
             display: flex;
             justify-content: center;
             padding: 15px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            /* Glassmorphism properties */
-            background: var(--glass-bg);
-            backdrop-filter: blur(var(--blur-amount));
-            -webkit-backdrop-filter: blur(var(--blur-amount));
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); /* Safari support */
             border-bottom: 1px solid var(--glass-border);
+            z-index: 100;
         }
 
         .nav-bar a {
+            color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
-            color: rgba(255, 255, 255, 0.6);
-            padding: 10px 20px;
-            margin: 0 5px;
-            border-radius: 30px;
-            font-weight: 500;
-            transition: all 0.3s ease;
+            padding: 8px 16px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
             border: 1px solid transparent;
+            border-radius: 4px;
+            transition: 0.3s;
         }
 
-        .nav-bar a:hover, .nav-bar a.active {
-            color: white;
-            background: rgba(255,255,255,0.1);
-            border-color: var(--glass-border);
-            box-shadow: 0 0 15px rgba(255,255,255,0.2);
+        .nav-bar a.active, .nav-bar a:hover {
+            color: #fff;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px var(--neon-blue);
+            text-shadow: 0 0 8px var(--neon-blue);
         }
 
-        /* --- Main Content Area --- */
+        /* --- Main Stage --- */
         .content {
             flex: 1;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             position: relative;
-            /* Subtle glass container for the center element */
-            background: rgba(0,0,0,0.2);
-             backdrop-filter: blur(5px);
+            perspective: 1000px;
         }
 
-        /* --- The Interactive Crystal --- */
+        /* Crystal */
         .crystal-container {
-            position: relative;
-            width: 200px;
-            height: 200px;
+            width: 180px;
+            height: 180px;
             cursor: pointer;
-            transition: transform 0.3s ease;
-            z-index: 10;
+            transition: transform 0.3s;
+            animation: float 3s ease-in-out infinite;
+            z-index: 50;
+            position: relative;
         }
 
-        .crystal-container:hover {
-            transform: scale(1.05) rotate(5deg);
-        }
-        
-        /* The Crystal visuals constructed via CSS */
-        .crystal-wrapper {
-             position: relative;
-             width: 100%;
-             height: 100%;
-             animation: float 4s ease-in-out infinite;
-        }
-
-        .crystal-shape {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 150px;
-            height: 150px;
-            /* Creating a diamond shape */
-            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-            background: linear-gradient(135deg, var(--crystal-color-1), var(--crystal-color-2));
-            transform: translate(-50%, -50%);
-            opacity: 0.8;
-            box-shadow: 0 0 30px rgba(168, 237, 234, 0.6), inset 0 0 20px rgba(255,255,255,0.5);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255,255,255,0.4);
-            transition: all 0.5s ease;
-        }
-        
-        /* Adding facets to look more 3D */
-        .crystal-shape::before {
-             content: '';
-             position: absolute;
-             top: 10px; left: 25%;
-             width: 50%; height: 50%;
-             background: rgba(255,255,255,0.4);
-             clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
-        }
-        
-        /* Text hint below crystal */
-        .click-hint {
-            position: absolute;
-            bottom: -40px;
+        .crystal-img {
             width: 100%;
-            text-align: center;
-            font-size: 0.9em;
-            opacity: 0.7;
-            letter-spacing: 2px;
+            height: 100%;
+            /* CSS Generated Diamond Shape */
+            background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(200,200,255,0.4));
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.5);
+            border-top: 1px solid rgba(255,255,255,0.8);
         }
 
         @keyframes float {
@@ -145,91 +150,102 @@
             50% { transform: translateY(-20px); }
         }
 
-        /* --- The Explosion & Party State --- */
-        
-        /* Hide crystal when popped */
-        .crystal-container.popped .crystal-wrapper {
-            transform: scale(1.5);
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        /* The Party Text */
-        .party-message {
+        .click-hint {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.5);
-            font-family: 'Montserrat', sans-serif;
-            font-size: 4em;
-            font-weight: 800;
-            text-align: center;
-            background: linear-gradient(to right, #fff, #a8edea, #fed6e3, #fff);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            opacity: 0;
-            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy transition */
-            z-index: 20;
-            white-space: nowrap;
-        }
-
-        .party-message.show {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
-            animation: textShine 3s linear infinite;
-        }
-
-        @keyframes textShine {
-            to { background-position: 200% center; }
-        }
-
-        /* --- Mirror Ball Effect Particles --- */
-        #disco-container {
-            position: fixed;
-            top: 0;
-            left: 0;
+            bottom: -30px;
             width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 5;
-            overflow: hidden;
+            text-align: center;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            opacity: 0.8;
         }
 
-        .disco-particle {
+        /* Cat & Party Mode */
+        .cat-container {
             position: absolute;
-            background: white;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            display: none; /* Hidden initially */
+            flex-direction: column;
+            align-items: center;
+            z-index: 60;
+        }
+
+        .party-active .crystal-container {
+            display: none;
+        }
+
+        .party-active .cat-container {
+            display: flex;
+        }
+
+        .spinning-cat {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 0 50px var(--neon-pink), 0 0 100px var(--neon-blue);
+            animation: spin 1.8s linear infinite; /* 135BPM approximation */
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .party-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3rem;
+            text-align: center;
+            margin-top: 20px;
+            color: white;
+            text-shadow: 0 0 10px #fff, 0 0 20px var(--neon-pink);
+            animation: pulseText 0.5s infinite alternate;
+        }
+
+        @keyframes pulseText {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+
+        /* --- Particles (Optimized) --- */
+        .particle {
+            position: absolute;
             border-radius: 50%;
             opacity: 0;
-            box-shadow: 0 0 10px white, 0 0 20px var(--crystal-color-1);
-        }
-        
-        /* Animation for the particles flying around */
-        @keyframes discoMove {
-            0% { opacity: 0; transform: translateY(0) scale(0.5) rotate(0deg); }
-            20% { opacity: 0.8; }
-            80% { opacity: 0.8; }
-            100% { opacity: 0; transform: translateY(var(--move-y)) translateX(var(--move-x)) scale(1.2) rotate(180deg); }
+            pointer-events: none;
         }
 
-        footer {
-            text-align: center;
-            padding: 15px;
-            font-size: 0.8em;
-            background: var(--glass-bg);
-            backdrop-filter: blur(var(--blur-amount));
-            border-top: 1px solid var(--glass-border);
-            color: rgba(255,255,255,0.5);
+        @keyframes particleFly {
+            0% { transform: translate(0, 0) scale(0); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(1.5); opacity: 0; }
         }
 
-        @media (max-width: 600px) {
-            .party-message { font-size: 2.5em; }
-            .crystal-container { width: 150px; height: 150px; }
-            .crystal-shape { width: 100px; height: 100px; }
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .nav-bar { flex-wrap: wrap; padding: 10px; }
+            .nav-bar a { font-size: 0.75rem; padding: 5px 10px; }
+            .spinning-cat { width: 200px; height: 200px; }
+            .party-text { font-size: 2rem; }
+            /* Disable heavy blur on mobile to prevent crashes */
+            .nav-bar { backdrop-filter: none; background: rgba(0,0,0,0.9); }
         }
     </style>
 </head>
 <body>
+
+    <audio id="party-audio" loop>
+        <source src="https://www.myinstants.com/media/sounds/maxwell-the-cat-theme.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="club-bg"></div>
+    <div class="strobe-light" id="strobe"></div>
+    <div class="lasers-wrapper" id="lasers">
+        <div class="laser-beam"></div>
+        <div class="laser-beam"></div>
+        <div class="laser-beam"></div>
+        <div class="laser-beam"></div>
+    </div>
 
     <div class="nav-bar">
         <a href="index.html">HOME</a>
@@ -239,82 +255,108 @@
         <a href="HYUNJUN.html" class="active">HYUNJUN</a>
     </div>
 
-    <div id="disco-container"></div>
-
-    <div class="content">
-        <div class="crystal-container" id="crystal" onclick="popCrystal()">
-            <div class="crystal-wrapper">
-                <div class="crystal-shape"></div>
-            </div>
-            <div class="click-hint" id="hint-text">CLICK TO IGNITE</div>
+    <div class="content" id="content-area">
+        <div class="crystal-container" onclick="startParty()">
+            <div class="crystal-img"></div>
+            <div class="click-hint">CLICK TO IGNITE</div>
         </div>
 
-        <div class="party-message" id="party-text">
-            DUHYEON PARTY
+        <div class="cat-container">
+            <img src="https://media1.tenor.com/m/NuwI5lBbWBoAAAAC/maxwell-cat.gif" alt="Spinning Cat" class="spinning-cat">
+            <div class="party-text">DUHYEON<br>PARTY</div>
         </div>
     </div>
 
-    <footer>
-        © 2024 Duhyeon Company | Glass Series
-    </footer>
-
     <script>
-        function popCrystal() {
-            const crystal = document.getElementById('crystal');
-            const partyText = document.getElementById('party-text');
-            const hintText = document.getElementById('hint-text');
-            
-            // 1. Trigger crystal explosion state
-            crystal.classList.add('popped');
-            hintText.style.opacity = '0';
+        function startParty() {
+            const body = document.body;
+            const audio = document.getElementById('party-audio');
+            const strobe = document.getElementById('strobe');
+            const lasers = document.getElementById('lasers');
 
-            // 2. Show the party message after a brief delay for the pop animation
-            setTimeout(() => {
-                partyText.classList.add('show');
-                // 3. Start mirror ball effect
-                startDiscoEffect();
-            }, 300);
+            // 1. Switch CSS State
+            body.classList.add('party-active');
+
+            // 2. Activate Lights
+            strobe.classList.add('strobe-active');
+            lasers.classList.add('lasers-active');
+
+            // 3. Play Music
+            // Note: Browsers block autoplay until user interaction (click), so this works perfectly inside the onclick function.
+            audio.volume = 0.5;
+            audio.play().catch(e => console.log("Audio failed to play:", e));
+
+            // 4. Spawn Particles (Optimized for Mobile)
+            spawnParticles();
         }
 
-        function startDiscoEffect() {
-            const container = document.getElementById('disco-container');
-            const particleCount = 80; // Number of sparkles
+        function spawnParticles() {
+            const container = document.body;
+            // Detect mobile to reduce particle count
+            const isMobile = window.innerWidth < 768;
+            const count = isMobile ? 20 : 60; 
 
-            // Create particles
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'disco-particle';
+            for (let i = 0; i < count; i++) {
+                const p = document.createElement('div');
+                p.classList.add('particle');
                 
-                // Random properties for chaotic disco effect
-                const size = Math.random() * 8 + 2 + 'px';
-                const posX = Math.random() * 100 + '%';
-                const posY = Math.random() * 100 + '%';
-                const delay = Math.random() * 2 + 's';
-                const duration = Math.random() * 3 + 2 + 's';
-                // Random movement directions
-                const moveX = (Math.random() * 200 - 100) + 'px';
-                const moveY = (Math.random() * 200 - 100) + 'px';
+                // Random positioning center screen
+                const startX = window.innerWidth / 2;
+                const startY = window.innerHeight / 2;
                 
-                // Assign styles dynamically
-                particle.style.width = size;
-                particle.style.height = size;
-                particle.style.left = posX;
-                particle.style.top = posY;
-                particle.style.setProperty('--move-x', moveX);
-                particle.style.setProperty('--move-y', moveY);
-                particle.style.animation = `discoMove ${duration} linear ${delay} infinite`;
+                p.style.left = startX + 'px';
+                p.style.top = startY + 'px';
                 
-                // Optional: varied colors
-                if (Math.random() > 0.7) {
-                    particle.style.background = '#a8edea'; // Cyan tint
-                    particle.style.boxShadow = '0 0 15px #a8edea';
-                } else if (Math.random() > 0.85) {
-                     particle.style.background = '#fed6e3'; // Pink tint
-                     particle.style.boxShadow = '0 0 15px #fed6e3';
-                }
+                // Random color
+                const color = Math.random() > 0.5 ? '#00f3ff' : '#ff00ff';
+                p.style.background = color;
+                p.style.boxShadow = `0 0 10px ${color}`;
+                
+                // Random size
+                const size = Math.random() * 6 + 2 + 'px';
+                p.style.width = size;
+                p.style.height = size;
 
-                container.appendChild(particle);
+                // Physics direction
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = Math.random() * 300 + 100; // Distance to fly
+                const tx = Math.cos(angle) * velocity + 'px';
+                const ty = Math.sin(angle) * velocity + 'px';
+                
+                p.style.setProperty('--tx', tx);
+                p.style.setProperty('--ty', ty);
+
+                // Animation duration
+                const duration = Math.random() * 1 + 0.5 + 's';
+                p.style.animation = `particleFly ${duration} ease-out forwards`;
+
+                container.appendChild(p);
+
+                // Cleanup to prevent memory leak
+                setTimeout(() => { p.remove(); }, 2000);
             }
+
+            // Optional: Loop particles
+            setInterval(() => {
+                if(document.body.classList.contains('party-active')) {
+                    // Reduced loop for mobile
+                    if(Math.random() > (isMobile ? 0.8 : 0.5)) spawnSingleParticle();
+                }
+            }, 100);
+        }
+
+        function spawnSingleParticle() {
+            const p = document.createElement('div');
+            p.classList.add('particle');
+            p.style.left = Math.random() * window.innerWidth + 'px';
+            p.style.top = Math.random() * window.innerHeight + 'px';
+            p.style.background = 'white';
+            p.style.width = '4px'; p.style.height = '4px';
+            p.style.setProperty('--tx', (Math.random()*100-50)+'px');
+            p.style.setProperty('--ty', (Math.random()*100-50)+'px');
+            p.style.animation = `particleFly 1s ease-out forwards`;
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 1000);
         }
     </script>
 </body>
