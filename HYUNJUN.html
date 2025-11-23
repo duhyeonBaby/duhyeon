@@ -2,42 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HYUNJUN | Wordle</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HYUNJUN PARTY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --color-correct: #538d4e;
-            --color-present: #b59f3b;
-            --color-absent: #3a3a3c;
-            --color-bg: #121213;
-            --color-text: #ffffff;
             --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --tile-border-idle: #3a3a3c;
-            --tile-border-active: #818384;
-        }
-
-        * {
-            box-sizing: border-box;
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --blur-amount: 15px;
+            --crystal-color-1: #a8edea;
+            --crystal-color-2: #fed6e3;
         }
 
         body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
-            margin: 0;
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--color-bg);
-            color: var(--color-text);
-            overflow-x: hidden;
-            /* Animated Background */
-            background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #121213);
+            /* Deep, rich moving gradient background to enhance glass effect */
+            background: linear-gradient(45deg, #020024, #090979, #00d4ff, #7a00cc);
             background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            animation: gradientBG 20s ease infinite;
+            color: white;
+            overflow-x: hidden; /* Prevent scrollbars from effects */
         }
 
         @keyframes gradientBG {
@@ -46,265 +34,202 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* --- Navigation --- */
+        /* --- Highly Transparent Glass Nav Bar --- */
         .nav-bar {
             display: flex;
             justify-content: center;
-            align-items: center;
-            padding: 1rem 0;
-            background: rgba(18, 18, 19, 0.8);
-            backdrop-filter: blur(10px);
+            padding: 15px 0;
             position: sticky;
             top: 0;
             z-index: 100;
+            /* Glassmorphism properties */
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--blur-amount));
+            -webkit-backdrop-filter: blur(var(--blur-amount));
             border-bottom: 1px solid var(--glass-border);
-            flex-wrap: wrap;
-            gap: 10px;
         }
 
         .nav-bar a {
             text-decoration: none;
-            color: rgba(255, 255, 255, 0.7);
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            letter-spacing: 0.5px;
-        }
-
-        .nav-bar a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 50%;
-            background-color: var(--color-correct);
+            color: rgba(255, 255, 255, 0.6);
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 30px;
+            font-weight: 500;
             transition: all 0.3s ease;
-            transform: translateX(-50%);
+            border: 1px solid transparent;
         }
 
-        .nav-bar a:hover {
+        .nav-bar a:hover, .nav-bar a.active {
             color: white;
-            background: var(--glass-bg);
+            background: rgba(255,255,255,0.1);
+            border-color: var(--glass-border);
+            box-shadow: 0 0 15px rgba(255,255,255,0.2);
         }
 
-        .nav-bar a:hover::after {
-            width: 80%;
-        }
-
-        .nav-bar a.active {
-            color: var(--color-correct);
-            background: rgba(83, 141, 78, 0.1);
-        }
-
-        /* --- Main Layout --- */
+        /* --- Main Content Area --- */
         .content {
             flex: 1;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            width: 100%;
-        }
-
-        .title-area {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .title-area h1 {
-            margin: 0;
-            font-size: 2.5rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-
-        .title-area p {
-            margin: 5px 0 0;
-            color: #818384;
-            font-size: 0.9rem;
-        }
-
-        /* --- Game Board --- */
-        .game-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            /* Zoom resistance logic */
-            width: min(100%, 500px); 
-        }
-
-        .wordle-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 5px;
-            padding: 10px;
-            margin-bottom: 20px;
-        }
-
-        .wordle-cell {
-            width: clamp(3rem, 8vw, 3.8rem); /* Responsive sizing */
-            height: clamp(3rem, 8vw, 3.8rem);
-            border: 2px solid var(--tile-border-idle);
-            background-color: transparent;
-            color: white;
-            display: flex;
             justify-content: center;
             align-items: center;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 2rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            transition: border-color 0.1s;
-            user-select: none;
+            position: relative;
+            /* Subtle glass container for the center element */
+            background: rgba(0,0,0,0.2);
+             backdrop-filter: blur(5px);
         }
 
-        /* --- Animations --- */
-        
-        /* When typing a letter */
-        .wordle-cell.pop {
-            animation: pop 0.1s ease-in-out;
-            border-color: var(--tile-border-active);
-        }
-
-        @keyframes pop {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        /* Flip animation for revealing */
-        .wordle-cell.flip {
-            animation: flip 0.6s ease-in forwards;
-        }
-
-        @keyframes flip {
-            0% { transform: rotateX(0); background-color: transparent; border-color: var(--tile-border-active); }
-            45% { transform: rotateX(90deg); background-color: transparent; border-color: var(--tile-border-active); }
-            55% { transform: rotateX(90deg); background-color: var(--bg-color); border-color: var(--bg-color); }
-            100% { transform: rotateX(0); background-color: var(--bg-color); border-color: var(--bg-color); }
-        }
-
-        /* Shake for invalid words */
-        .shake {
-            animation: shake 0.5s;
-        }
-
-        @keyframes shake {
-            0% { transform: translateX(1px); }
-            10% { transform: translateX(-1px); }
-            20% { transform: translateX(-3px); }
-            30% { transform: translateX(3px); }
-            40% { transform: translateX(1px); }
-            50% { transform: translateX(-1px); }
-            60% { transform: translateX(-3px); }
-            70% { transform: translateX(3px); }
-            80% { transform: translateX(-1px); }
-            90% { transform: translateX(1px); }
-        }
-
-        /* --- Coloring Classes (applied via JS) --- */
-        .wordle-cell.correct { --bg-color: var(--color-correct); }
-        .wordle-cell.present { --bg-color: var(--color-present); }
-        .wordle-cell.absent { --bg-color: var(--color-absent); }
-
-        /* --- Controls & Toast --- */
-        .controls {
-            margin-top: 20px;
-            display: flex;
-            gap: 10px;
-        }
-
-        button.primary-btn {
-            background-color: var(--color-text);
-            color: black;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 1rem;
+        /* --- The Interactive Crystal --- */
+        .crystal-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
             cursor: pointer;
-            transition: transform 0.2s, opacity 0.2s;
-            box-shadow: 0 4px 15px rgba(255,255,255,0.2);
+            transition: transform 0.3s ease;
+            z-index: 10;
         }
 
-        button.primary-btn:hover {
-            transform: translateY(-2px);
-            opacity: 0.9;
+        .crystal-container:hover {
+            transform: scale(1.05) rotate(5deg);
+        }
+        
+        /* The Crystal visuals constructed via CSS */
+        .crystal-wrapper {
+             position: relative;
+             width: 100%;
+             height: 100%;
+             animation: float 4s ease-in-out infinite;
         }
 
-        button.primary-btn:active {
-            transform: translateY(0);
-        }
-
-        /* Toast Notification */
-        #toast-container {
-            position: fixed;
-            top: 10%;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .toast {
-            background-color: white;
-            color: black;
-            padding: 10px 20px;
-            border-radius: 4px;
-            font-weight: 600;
-            opacity: 0;
-            transform: translateY(-20px);
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        footer {
-            padding: 20px;
-            text-align: center;
-            color: #818384;
-            font-size: 0.8rem;
-            border-top: 1px solid var(--glass-border);
-        }
-
-        /* Mobile Input Helper (Invisible) */
-        #hidden-input {
+        .crystal-shape {
             position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 150px;
+            height: 150px;
+            /* Creating a diamond shape */
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            background: linear-gradient(135deg, var(--crystal-color-1), var(--crystal-color-2));
+            transform: translate(-50%, -50%);
+            opacity: 0.8;
+            box-shadow: 0 0 30px rgba(168, 237, 234, 0.6), inset 0 0 20px rgba(255,255,255,0.5);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.4);
+            transition: all 0.5s ease;
+        }
+        
+        /* Adding facets to look more 3D */
+        .crystal-shape::before {
+             content: '';
+             position: absolute;
+             top: 10px; left: 25%;
+             width: 50%; height: 50%;
+             background: rgba(255,255,255,0.4);
+             clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+        }
+        
+        /* Text hint below crystal */
+        .click-hint {
+            position: absolute;
+            bottom: -40px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.9em;
+            opacity: 0.7;
+            letter-spacing: 2px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* --- The Explosion & Party State --- */
+        
+        /* Hide crystal when popped */
+        .crystal-container.popped .crystal-wrapper {
+            transform: scale(1.5);
             opacity: 0;
             pointer-events: none;
         }
+
+        /* The Party Text */
+        .party-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.5);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 4em;
+            font-weight: 800;
+            text-align: center;
+            background: linear-gradient(to right, #fff, #a8edea, #fed6e3, #fff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy transition */
+            z-index: 20;
+            white-space: nowrap;
+        }
+
+        .party-message.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            animation: textShine 3s linear infinite;
+        }
+
+        @keyframes textShine {
+            to { background-position: 200% center; }
+        }
+
+        /* --- Mirror Ball Effect Particles --- */
+        #disco-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+            overflow: hidden;
+        }
+
+        .disco-particle {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            box-shadow: 0 0 10px white, 0 0 20px var(--crystal-color-1);
+        }
         
-        /* Mobile Keyboard trigger area */
-        .mobile-keyboard-trigger {
-            display: none; /* Hidden by default, shown in JS if touch detected */
-            margin-top: 15px;
-            color: #818384;
-            font-size: 0.8rem;
-            text-decoration: underline;
-            cursor: pointer;
+        /* Animation for the particles flying around */
+        @keyframes discoMove {
+            0% { opacity: 0; transform: translateY(0) scale(0.5) rotate(0deg); }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.8; }
+            100% { opacity: 0; transform: translateY(var(--move-y)) translateX(var(--move-x)) scale(1.2) rotate(180deg); }
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            font-size: 0.8em;
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--blur-amount));
+            border-top: 1px solid var(--glass-border);
+            color: rgba(255,255,255,0.5);
         }
 
         @media (max-width: 600px) {
-            .title-area h1 { font-size: 2rem; }
-            .mobile-keyboard-trigger { display: block; }
+            .party-message { font-size: 2.5em; }
+            .crystal-container { width: 150px; height: 150px; }
+            .crystal-shape { width: 100px; height: 100px; }
         }
     </style>
 </head>
 <body>
-    <div id="toast-container"></div>
 
     <div class="nav-bar">
         <a href="index.html">HOME</a>
@@ -314,238 +239,82 @@
         <a href="HYUNJUN.html" class="active">HYUNJUN</a>
     </div>
 
+    <div id="disco-container"></div>
+
     <div class="content">
-        <div class="title-area">
-            <h1>HYUNJUN</h1>
-            <p>Guess the hidden word</p>
+        <div class="crystal-container" id="crystal" onclick="popCrystal()">
+            <div class="crystal-wrapper">
+                <div class="crystal-shape"></div>
+            </div>
+            <div class="click-hint" id="hint-text">CLICK TO IGNITE</div>
         </div>
 
-        <div class="game-container">
-            <div class="wordle-grid" id="grid"></div>
-            <input type="text" id="hidden-input" autocomplete="off">
-            
-            <div class="controls">
-                <button class="primary-btn" onclick="triggerEnter()">Submit (Enter)</button>
-                <button class="primary-btn" style="background: #3a3a3c; color: white;" onclick="startNewGame()">Restart</button>
-            </div>
-            <div class="mobile-keyboard-trigger" onclick="focusInput()">Tap here to enable keyboard</div>
+        <div class="party-message" id="party-text">
+            DUHYEON PARTY
         </div>
     </div>
 
     <footer>
-        © 2024 Duhyeon Company | Engineering Division
+        © 2024 Duhyeon Company | Glass Series
     </footer>
 
     <script>
-        // Enhanced Dictionary
-        const wordleWords = [
-            'APPLE', 'GRAPE', 'PEACH', 'LEMON', 'BERRY', 'STORM', 'BRAVE', 
-            'CLOUD', 'SHINE', 'GRACE', 'AVOID', 'SMASH', 'PHONE', 'AFTER', 
-            'DRIVE', 'POINT', 'SNAIL', 'SMILE', 'WEARY', 'AMONG', 'BROOM', 
-            'STICK', 'ROBOT', 'PIXEL', 'CACHE', 'LOGIC', 'INPUT', 'STACK',
-            'ARRAY', 'CLASS', 'DEBUG', 'REACT', 'LINUX'
-        ];
-
-        let currentWord = '';
-        let attempts = 0;
-        let currentGuess = ''; // We store the guess string directly now
-        const maxAttempts = 6;
-        const wordLength = 5;
-        let isGameOver = false;
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            startNewGame();
+        function popCrystal() {
+            const crystal = document.getElementById('crystal');
+            const partyText = document.getElementById('party-text');
+            const hintText = document.getElementById('hint-text');
             
-            // Global Keyboard Listener
-            document.addEventListener('keydown', handleKeydown);
-            
-            // Mobile Input Listener
-            const hiddenInput = document.getElementById('hidden-input');
-            hiddenInput.addEventListener('input', (e) => {
-                const val = e.target.value;
-                if(val.length > 0) {
-                    const char = val[val.length-1].toUpperCase();
-                    if(/[A-Z]/.test(char)) addLetter(char);
-                    e.target.value = "";
-                }
-            });
-            hiddenInput.addEventListener('keydown', (e) => {
-                 if (e.key === 'Backspace') {
-                    deleteLetter();
-                 }
-                 if (e.key === 'Enter') {
-                    submitGuess();
-                 }
-            });
-        });
+            // 1. Trigger crystal explosion state
+            crystal.classList.add('popped');
+            hintText.style.opacity = '0';
 
-        function focusInput() {
-            document.getElementById('hidden-input').focus();
-        }
-
-        function startNewGame() {
-            currentWord = wordleWords[Math.floor(Math.random() * wordleWords.length)];
-            // For debugging: console.log(currentWord); 
-            attempts = 0;
-            currentGuess = '';
-            isGameOver = false;
-            generateGrid();
-            showToast("New Game Started!");
-        }
-
-        function generateGrid() {
-            const grid = document.getElementById('grid');
-            grid.innerHTML = '';
-            for (let i = 0; i < maxAttempts * wordLength; i++) {
-                const cell = document.createElement('div');
-                cell.className = 'wordle-cell';
-                cell.id = `cell-${i}`;
-                grid.appendChild(cell);
-            }
-        }
-
-        // Handle Inputs
-        function handleKeydown(e) {
-            if (isGameOver) return;
-
-            if (e.key === 'Enter') {
-                submitGuess();
-            } else if (e.key === 'Backspace') {
-                deleteLetter();
-            } else if (/^[a-zA-Z]$/.test(e.key)) {
-                addLetter(e.key.toUpperCase());
-            }
-        }
-
-        function triggerEnter() {
-            if (!isGameOver) submitGuess();
-        }
-
-        function addLetter(letter) {
-            if (currentGuess.length < wordLength) {
-                currentGuess += letter;
-                updateGridVisuals();
-                // Add pop animation to the specific cell
-                const cellIndex = (attempts * wordLength) + currentGuess.length - 1;
-                const cell = document.getElementById(`cell-${cellIndex}`);
-                cell.classList.remove('pop');
-                void cell.offsetWidth; // trigger reflow
-                cell.classList.add('pop');
-            }
-        }
-
-        function deleteLetter() {
-            if (currentGuess.length > 0) {
-                currentGuess = currentGuess.slice(0, -1);
-                updateGridVisuals();
-            }
-        }
-
-        function updateGridVisuals() {
-            const startIndex = attempts * wordLength;
-            for (let i = 0; i < wordLength; i++) {
-                const cell = document.getElementById(`cell-${startIndex + i}`);
-                cell.textContent = currentGuess[i] || '';
-                if (!currentGuess[i]) {
-                    cell.classList.remove('pop');
-                }
-            }
-        }
-
-        function submitGuess() {
-            if (currentGuess.length !== wordLength) {
-                shakeRow();
-                showToast("Not enough letters");
-                return;
-            }
-
-            checkGuess();
-        }
-
-        function shakeRow() {
-            const grid = document.getElementById('grid');
-            const startIndex = attempts * wordLength;
-            // In a real implementation you might wrap rows in divs, 
-            // here we shake the whole grid or just apply class to cells
-            // Simpler: Shake the grid container lightly
-            grid.classList.add('shake');
-            setTimeout(() => grid.classList.remove('shake'), 500);
-        }
-
-        function checkGuess() {
-            const startIndex = attempts * wordLength;
-            const guessArray = currentGuess.split('');
-            const wordArray = currentWord.split('');
-            
-            // Frequency map for logic
-            const wordFrequency = wordArray.reduce((freq, letter) => {
-                freq[letter] = (freq[letter] || 0) + 1;
-                return freq;
-            }, {});
-
-            // Store results to apply sequentially
-            const results = Array(wordLength).fill('absent');
-            
-            // 1. Find Correct
-            guessArray.forEach((char, i) => {
-                if (char === wordArray[i]) {
-                    results[i] = 'correct';
-                    wordFrequency[char]--;
-                }
-            });
-
-            // 2. Find Present
-            guessArray.forEach((char, i) => {
-                if (results[i] !== 'correct' && wordFrequency[char] > 0) {
-                    results[i] = 'present';
-                    wordFrequency[char]--;
-                }
-            });
-
-            // Apply animations with delay
-            for (let i = 0; i < wordLength; i++) {
-                const cell = document.getElementById(`cell-${startIndex + i}`);
-                setTimeout(() => {
-                    cell.classList.add('flip');
-                    cell.classList.add(results[i]);
-                }, i * 250); // 250ms delay between each tile
-            }
-
-            // Check win/loss after animations finish
+            // 2. Show the party message after a brief delay for the pop animation
             setTimeout(() => {
-                if (currentGuess === currentWord) {
-                    showToast("Impressive! You Won! 🎉");
-                    isGameOver = true;
-                } else {
-                    attempts++;
-                    if (attempts >= maxAttempts) {
-                        showToast(`Game Over! Word was: ${currentWord}`);
-                        isGameOver = true;
-                    } else {
-                        currentGuess = ''; // Reset for next row
-                    }
-                }
-            }, wordLength * 250 + 100);
+                partyText.classList.add('show');
+                // 3. Start mirror ball effect
+                startDiscoEffect();
+            }, 300);
         }
 
-        // Custom Toast System
-        function showToast(message) {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.textContent = message;
-            container.appendChild(toast);
+        function startDiscoEffect() {
+            const container = document.getElementById('disco-container');
+            const particleCount = 80; // Number of sparkles
 
-            // Trigger animation
-            requestAnimationFrame(() => {
-                toast.classList.add('show');
-            });
+            // Create particles
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'disco-particle';
+                
+                // Random properties for chaotic disco effect
+                const size = Math.random() * 8 + 2 + 'px';
+                const posX = Math.random() * 100 + '%';
+                const posY = Math.random() * 100 + '%';
+                const delay = Math.random() * 2 + 's';
+                const duration = Math.random() * 3 + 2 + 's';
+                // Random movement directions
+                const moveX = (Math.random() * 200 - 100) + 'px';
+                const moveY = (Math.random() * 200 - 100) + 'px';
+                
+                // Assign styles dynamically
+                particle.style.width = size;
+                particle.style.height = size;
+                particle.style.left = posX;
+                particle.style.top = posY;
+                particle.style.setProperty('--move-x', moveX);
+                particle.style.setProperty('--move-y', moveY);
+                particle.style.animation = `discoMove ${duration} linear ${delay} infinite`;
+                
+                // Optional: varied colors
+                if (Math.random() > 0.7) {
+                    particle.style.background = '#a8edea'; // Cyan tint
+                    particle.style.boxShadow = '0 0 15px #a8edea';
+                } else if (Math.random() > 0.85) {
+                     particle.style.background = '#fed6e3'; // Pink tint
+                     particle.style.boxShadow = '0 0 15px #fed6e3';
+                }
 
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
+                container.appendChild(particle);
+            }
         }
     </script>
 </body>
